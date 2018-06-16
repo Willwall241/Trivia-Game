@@ -1,183 +1,183 @@
-//Declare variables
-//Make array of question obj
-//create start page with button(hide start button when clicked)
-//create timer function
-//create function to show timer
-//Initialize game 
-//Function to pick one question from the array put on page, loop to put choices on page
-//functin to check if answer is correct and change screen when choice is clicked
-//function to show final score and reset button(hide button once pressed)
-
 var questionArray = [
   {
-    q: "What actor plays the 9th Doctor?",
-    ansr: ["David Tennant", "Christopher Eccleston", "Arthur Darvill", "John Barrowman"],
+    question: "What actor plays the 9th Doctor?",
+    answerList: ["David Tennant", "Christopher Eccleston", "Arthur Darvill", "John Barrowman"],
     correct: 1,
   },
 
   {
-    q: "Who is the Doctor's main companion in Season 3?",
-    ansr: ["Amy Pond", "Rose Tyler", "Martha Jones", "Donna Noble"],
+    question: "Who is the Doctor's main companion in Season 3?",
+    answerList: ["Amy Pond", "Rose Tyler", "Martha Jones", "Donna Noble"],
     correct: 2,
   },
 
   {
-    q: "What is the 10th Doctor's favorite catchphrase?",
-    ansr: ["Fantastic!", "Allons-y!", "Who da man?", "Do you want a jelly baby?"],
+    question: "What is the 10th Doctor's favorite catchphrase?",
+    answerList: ["Fantastic!", "Allons-y!", "Who da man?", "Do you want a jelly baby?"],
     correct: 1,
   },
 
   {
-    q: "What is Rose Tyler's alter ego?",
-    ansr: ["The Impossible Girl", "The Bad Wolf", "The Empty Child", "The Girl Who Waited"],
+    question: "What is Rose Tyler's alter ego?",
+    answerList: ["The Impossible Girl", "The Bad Wolf", "The Empty Child", "The Girl Who Waited"],
     correct: 1,
   },
 
   {
-    q: "John Barrowman plays what character in Doctor Who?",
-    ansr: ["The 10th Doctor", "Rory Williams", "Mickey Smith", "Jack Harkness"],
+    question: "John Barrowman plays what character in Doctor Who?",
+    answerList: ["The 10th Doctor", "Rory Williams", "Mickey Smith", "Jack Harkness"],
     correct: 3,
   },
 ];
 
-var messageArray = ["You are Correct!", "That is Incorrect!", "Time's Up!", "Final Score"];
+var displayArray = ["That is Correct, Great Job!", "That is Incorrect!", "Uh Oh Times Up!", "Here is your Final Score!"]
 
+var currentQuestion = 0;
+var questionNum = 0;
+var correctAns = 0;
+var incorrectAns = 0;
+var unanswered = 0;
+var clicked = true;
 var time;
 var seconds;
-var currentQuestion;
-var indexOfQuestion = 0;
-var answeredQ;
-var userGuess;
-var correctScore=0;
-var incorrectScore=0;
-var unansweredScore=0;
-
-
+var userSelect;
 $("#restart").hide();
 
+//Start button click function
 $("#startGame").on("click", function () {
-  initilizeGame();
-  $(this).hide();
+  //When start button is clicked
+  //call the startGame function
+  startGame();
 
 });
 
+//restart button click function
 $("#restart").on("click", function () {
-  initilizeGame();
-  $(this).hide();
+  //call the startGame function
+  startGame();
 
 });
 
-function startTimer() {
-  seconds = 25;
-  $("#timer").html("Time Remaining: " + seconds);
-  time = setInterval(count, 1000);
-
-};
-
-function count() {
-  seconds--;
-
-  $("#timer").html("Time Remaining: " + seconds);
-
-  //if statement for when time runs out
-  if (seconds < 1) {
-    eval();
-    clearInterval(time);
-  }
-};
-
-
-function initilizeGame() {
-  indexOfQuestion = 0;
-  incorrectScore = 0;
-  correctScore = 0;
-  unansweredScore = 0;
-  
-  newQuestion();
-  
-  $("#answer").empty();
-  $("#gif").empty();
+//startGame function
+function startGame() {
+  //clear divs on the stage
+  $("#startGame").hide();
+  $("#restart").hide();
+  $("#message").empty();
+  $("#timer").empty();
+  $("#question").empty();
+  $("#choices").empty();
   $("#correct").empty();
   $("#incorrect").empty();
   $("#unanswered").empty();
-
-};
-
-function newQuestion() {
-$("#message").empty();
-  $("#timer").show();
-
-  $("#question").text(questionArray[indexOfQuestion].q);
-
-  for (i = 0; i < questionArray[indexOfQuestion].ansr.length; i++) {
-
-    var choiceDiv = $("<div>");
-    var option = questionArray[indexOfQuestion].ansr[i];
-    choiceDiv.add(choiceDiv).text(option).addClass("thisChoice");
-    choiceDiv.data('data-index', i)
-    $("#choices").append(choiceDiv);
-    console.log($(".thisChoice").data('data-index'));
-    console.log($(".thisChoice").attr("class"));
-
-  };
-  startTimer();
-  $(".thisChoice").on("click", function () {
-    answeredQ = true;
-    userGuess = $(this).data('data-index');
-    clearInterval(time);
-    eval();
-    console.log("1");
-    console.log(userGuess);
-    
-    
-
-  });
-
-};
-
-function eval() {
-  $("#question").empty();
-  $("#choices").empty();
-  $("#timer").empty();
-
-  var rightAnswer = questionArray[indexOfQuestion].correct;
-  if (userGuess == rightAnswer && answeredQ == true) {
-    correctScore++;
-    $("#message").text(messageArray[0]);
-  }
-  else if (userGuess != rightAnswer && answeredQ == true) {
-    incorrectScore++;
-    $("#message").text(messageArray[1]);
-  }
-  else {
-    unansweredScore++;
-    $("#message").text(messageArray[2]);
-    answeredQ = false;
-  }
-
-  if (indexOfQuestion == questionArray.length-1) {
-    indexOfQuestion++;
-    setTimeout(finalScore, 1000);
-  }
-  else {
-
-    indexOfQuestion++;
-
-    setTimeout(newQuestion, 1000);
-  }
-
-
-};
-
-function finalScore () {
-  $("#message").empty();
-  $("#answer").empty();
   $("#gif").empty();
+  currentQuestion = 0;
+  correctAns = 0;
+  incorrectAns = 0;
+  unanswered = 0;
+  //call loadQuestion function
+  loadQuestion();
+};
 
-  $("#correct").text(correctScore);
-  $("#incorrect").text(incorrectScore);
-  $("#unanswered").text(unansweredScore);
+//startTimer function
+function startTimer() {
+  //give seconds variable a value for time allotted
+  seconds = 20;
+  //show seconds on the screen
+  $("#timer").html("Time Remaining: " + seconds);
+  //set an inteval to call the countdown function and set it to a variable
+  time = setInterval(countDown, 1000);
+};
+
+//Show countDown function
+function countDown() {
+  //deincrement seconds by 1
+  seconds--;
+  //update stage with new time
+  $("#timer").html("Time Remaining: " + seconds);
+  //if statement to end game if timer runs out and on last question
+  if (seconds <= 0) {    
+    clicked = false;
+    evalAnswer();
+    clearInterval(time);
+  }
+
+};
+
+//loadQuestion function/answer onclick function
+function loadQuestion() {
+  
+  //push random question from array to stage
+  
+
+  if (currentQuestion <= questionArray.length - 1) {
+    questionNum = currentQuestion + 1;
+    $("#question").text("Question #" + questionNum + ": " + questionArray[currentQuestion].question);
+    //fill choices div with answerList as buttons
+    for (i = 0; i < questionArray[currentQuestion].answerList.length; i++) {
+      var newButton = $("<button>");
+      newButton.text(questionArray[currentQuestion].answerList[i]);
+      newButton.addClass("choiceList");
+      newButton.attr("data-listNum", i);
+      $("#choices").append("<br>")
+      $("#choices").append(newButton);
+      $("#choices").append("<br>")
+      $("#choices").append("<br>")
+    };
+    //call Timer function
+    startTimer();
+    //on click for buttons that will change page and evaluate answer
+    $(".choiceList").on("click", function () {
+      clicked = true;
+      userSelect = $(this).attr("data-listNum");
+      evalAnswer();
+      clearInterval(time);
+
+    });
+  }
+  else {
+    finalScore();
+  }
+};
+
+  //function to evaluate guess
+  function evalAnswer() {
+    
+    $("#timer").empty();
+    $("#question").empty();
+    $("#choices").empty();
+
+    if (userSelect == questionArray[currentQuestion].correct && clicked == true) {
+      correctAns++;
+      currentQuestion++;
+      $("#message").text(displayArray[0]);
+      setTimeout(loadQuestion, 5000);
+    }
+    else if (userSelect != questionArray[currentQuestion].correct && clicked == true) {
+      incorrectAns++;
+      currentQuestion++;
+      $("#message").text(displayArray[1]);
+      setTimeout(loadQuestion, 5000);
+    }
+    else {
+      unanswered++;
+      currentQuestion++;
+      $("#message").text(displayArray[2]);
+      setTimeout(loadQuestion, 5000);
+    };
+    
+  };
+
+//function to show final score
+function finalScore() {
+  $("#messsage").empty();
+  $("#timer").empty();
+  $("#choices").empty();
+  clearInterval(time);
+
+  $("#message").text(displayArray[3])
+  $("#correct").text("Correct Answers: " + correctAns);
+  $("#incorrect").text("Incorrect Answers: " + incorrectAns);
+  $("#unanswered").text("Unanswered: " + unanswered);
   $("#restart").show();
-
-
 };
