@@ -1,11 +1,35 @@
 body {
   background-image: url(../images/drwho-bg.jpg);
+  font-family: 'Krona One', sans-serif;
+  color: white;
 }
 .align {
   margin-top: 10%;
 }
 
 .stage {
-  background-color: white;
+  background-color: #003d67;
   padding: 25px;
+  height: 550px;
+  border-radius: 25px; 
+}
+
+#startGame {
+  margin-top:75px;
+}
+
+#restart {
+  margin-top: 10px;
+}
+
+#gif {
+  margin-top: 15px;
+}
+
+#question {
+  margin-top: 5px;
+}
+
+#startMessage {
+  margin-top: 75px;
 }

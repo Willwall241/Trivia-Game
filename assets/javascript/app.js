@@ -31,6 +31,7 @@ var questionArray = [
 ];
 
 var displayArray = ["That is Correct, Great Job!", "That is Incorrect!", "Uh Oh Times Up!", "Here is your Final Score!"]
+var gifArray = ["https://media1.tenor.com/images/eb1b0c8c6f601d01125b0c31e1ff9be3/tenor.gif?itemid=5592543", "https://media1.tenor.com/images/0f7a8531439efd649a9001a18408de3d/tenor.gif?itemid=3565704", "https://media.giphy.com/media/gssn1KqoJ8KKk/giphy.gif", "https://media.giphy.com/media/10XhtVIa5cgy9G/giphy.gif"]
 
 var currentQuestion = 0;
 var questionNum = 0;
@@ -41,6 +42,7 @@ var clicked = true;
 var time;
 var seconds;
 var userSelect;
+var newGif = $("<img>");
 $("#restart").hide();
 
 //Start button click function
@@ -106,9 +108,9 @@ function countDown() {
 
 //loadQuestion function/answer onclick function
 function loadQuestion() {
-  
-  //push random question from array to stage
-  
+  $("#message").empty();
+  $("#gif").empty();
+  //push random question from array to stage  
 
   if (currentQuestion <= questionArray.length - 1) {
     questionNum = currentQuestion + 1;
@@ -122,7 +124,7 @@ function loadQuestion() {
       $("#choices").append("<br>")
       $("#choices").append(newButton);
       $("#choices").append("<br>")
-      $("#choices").append("<br>")
+      
     };
     //call Timer function
     startTimer();
@@ -149,35 +151,47 @@ function loadQuestion() {
 
     if (userSelect == questionArray[currentQuestion].correct && clicked == true) {
       correctAns++;
-      currentQuestion++;
+
       $("#message").text(displayArray[0]);
+      newGif.attr("src",gifArray[0]);
+      $("#gif").append(newGif);
       setTimeout(loadQuestion, 5000);
     }
     else if (userSelect != questionArray[currentQuestion].correct && clicked == true) {
       incorrectAns++;
-      currentQuestion++;
       $("#message").text(displayArray[1]);
+      $("#question").text("The correct answer is: " + questionArray[currentQuestion].answerList[questionArray[currentQuestion].correct]);
+      newGif.attr("src",gifArray[1]);
+      $("#gif").append(newGif);
       setTimeout(loadQuestion, 5000);
     }
     else {
       unanswered++;
-      currentQuestion++;
+      $("#question").text("The correct answer is: " + questionArray[currentQuestion].answerList[questionArray[currentQuestion].correct]);
       $("#message").text(displayArray[2]);
+      newGif.attr("src",gifArray[2]);
+      $("#gif").append(newGif);
       setTimeout(loadQuestion, 5000);
     };
+    currentQuestion++;
+    console.log(currentQuestion);
     
   };
 
 //function to show final score
 function finalScore() {
+  $("#gif").empty();
+  $("#question").empty();
   $("#messsage").empty();
   $("#timer").empty();
   $("#choices").empty();
   clearInterval(time);
-
+  
+  newGif.attr("src",gifArray[3]);
+  $("#gif").append(newGif);
   $("#message").text(displayArray[3])
   $("#correct").text("Correct Answers: " + correctAns);
   $("#incorrect").text("Incorrect Answers: " + incorrectAns);
-  $("#unanswered").text("Unanswered: " + unanswered);
+  $("#unanswered").text("Unanswered: " + unanswered);  
   $("#restart").show();
 };
